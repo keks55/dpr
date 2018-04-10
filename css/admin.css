@@ -1,0 +1,391 @@
+/*
+Author:       Keksus.com 
+Author URI:   http://keksus.com
+License: GNU  GPL v3.0
+
+Copyright 2017-2018 Keksus.com (email : alexbalance@gmail.com)
+*/
+
+/*-------------------------------------------------------*/
+/*  = Global css styles 
+/*-------------------------------------------------------*/
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: none;
+}
+html{
+    height: 100%;
+}
+body{
+    width: 100%;
+    height: 100%;
+}
+.fix{
+    margin:0 auto;
+    max-width:1120px;
+}
+.hh,.ff{
+    padding: 0px 15px;
+}
+.cc{
+    padding: 10px 15px;
+    overflow: hidden;
+}
+/*-------------------------------------------------------*/
+/*  = Helper styles 
+/*-------------------------------------------------------*/
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
+.none{
+    float: none;
+}
+.image{
+    float: left;
+    position: relative;
+}
+.img-responsive{
+    display: block;
+    height: auto;
+    max-width: 100% !important;
+}
+.center{
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+.video embed,
+.video object,
+.video iframe {
+    width: 100%;
+    height: auto;
+}
+.clear:before,
+.clear:after{
+    content: " ";
+    display: table;
+}
+.clear:after {
+    clear: both;
+}
+
+/*-------------------------------------------------------*/
+/*  = Columns
+/*-------------------------------------------------------*/
+.q1, .q2, .q3, .q4, .q5, .q6, .q7, .q8, .q9, .q10, .q11, .q12{
+    float: left;
+    position: relative;
+    /*overflow: hidden;*/
+}
+.q1{
+    width: 8.3333%;
+}
+.q2{
+    width: 16.6666%;
+}
+.q3{
+    width: 25%;
+}
+.q4{
+    width: 33.3333%;
+}
+.q5{
+    width: 41.6666%;
+}
+.q6{
+    width: 50%;
+}
+.q7{
+    width: 58.3333%;
+}
+.q8{
+    width: 66.6666%;
+}
+.q9{
+    width: 75%;
+}
+.q10{
+    width: 83.3333%;
+}
+.q11{
+    width: 91.6666%;
+}
+.q12{
+    width: 100%;
+}
+/*-------------------------------------------------------*/
+/*  = Main
+/*-------------------------------------------------------*/
+.options h1{ font-size: 24px; }
+.options h2{ font-size: 22px; }
+.options h3{ font-size: 20px; }
+.options h4{ font-size: 18px; }
+.options h5{ font-size: 16px; }
+.options h1,.options h2,.options h3,.options h4,.options h5{
+    border-bottom: 1px dotted #ccc;
+    color: #111;
+    padding-bottom: 13px;
+    font-weight: 400;
+}
+.options{
+    margin: 10px 20px 0 0;
+}
+.options h1{
+    margin-bottom: 25px;
+}
+.options a{
+    
+}
+.options a:focus{
+    box-shadow: none;
+}
+.options p {
+    display: block;
+    font-size: 15px;
+}
+.options label{
+    font-weight: bold;
+    color: #222;
+}
+.options input{
+    border: 1px solid #ccc;
+    height: 30px;
+    margin: 3px 5px 3px 0;
+    padding-left: 10px;
+}
+.options input.txt{
+    border: 1px solid #ccc;
+    height: 30px;
+    margin-top: 5px; 
+    margin-bottom: 10px;
+    padding: 0 10px;
+    width: 100%;
+}
+.options textarea{
+    border: 1px solid #ccc;
+    margin: 5px 0;
+    padding: 10px;
+    width: 100%;
+    font-family: "Courier New",Courier,monospace;
+    font-size: 15px;
+}
+.options input[type=checkbox]{
+    height: 18px;
+    margin-left: 5px;
+}
+.options input.file{
+    background: none;
+    border:0;
+    padding: 0;
+}
+.options select{
+    border: 1px solid #ccc;
+}
+.options input:focus,
+.options textarea:focus{
+    border-color: #5B9DD9;
+    box-shadow: 0 0 2px rgba(0, 122, 245, 0.8);
+}
+.options input.invalid, .options textarea.invalid{
+    border: 2px solid red;
+}
+.options input.valid, .options textarea.valid{
+    border: 2px solid green;
+}
+#footer-left .created{
+    text-decoration:underline;
+}
+#footer-left .created:hover{
+    color: #0074A2;
+}
+.notice, div.error, div.updated{
+    margin: 5px 15px 2px 0px;
+}
+.options .post {
+    display: block;
+    padding: 0 15px 0 0;
+}
+.options .post p{
+    margin: 3px 0px;
+
+    font-size: 14px;
+    line-height: 1.6em;
+}
+.options pre{
+    display: block;
+    background: #ebebeb;
+    border-left: 2px solid #8dc63f;
+    padding: 4px 10px;
+    margin-top: 10px; 
+    margin-bottom: 20px;
+}
+.options .button{
+    border: 1px solid #007AF5;
+}
+.options .button:focus{
+    box-shadow: none;
+}
+.options .button:hover{
+    border: 1px solid #2276ca;
+}
+.options .post p.links{
+    margin-top: 15px;
+}
+/*-------------------------------------------------------*/
+/*  = Buttons                                         
+/*-------------------------------------------------------*/
+#load{
+    display: inline-block;
+}
+#loading { 
+    display:none; 
+    position:absolute;
+    background:url(../images/loading.gif) 0 0 no-repeat; 
+    text-indent: -9999px;
+    padding-top: 0px; 
+    margin-left: 5px;
+    width: 16px;
+    top: 7px;
+}
+.buttons{
+    position:relative;
+}
+#response{
+    /*display: none;*/
+}
+.alert-success, .alert-error{
+    position: relative;
+    border-radius: 3px;
+    border:1px solid #ccc;
+    padding: 10px 40px 10px 15px;
+    margin-bottom: 10px;
+}
+.alert-close{
+    position: absolute;
+    font-size: 20px;
+    right: 15px; top: 10px;
+    cursor: pointer;
+    color: #555;
+}
+/*-------------------------------------------------------*/
+/*  = Table
+/*-------------------------------------------------------*/
+.options table{
+    width: 100%;
+    text-align: left;
+    border-right: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+.options th,.options td{
+    padding: 5px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+/*-------------------------------------------------------*/
+/*  = Tabs switch                                        
+/*-------------------------------------------------------*/
+.tabs{
+    display:inline-block;
+    position: relative;
+}
+.tabs ul,.tab-links li{
+    margin:0;
+    padding:0;
+}
+.tabs ul.tab-links li{
+    margin-left: 1px;
+}
+.tabs ul.tab-links li:first-child{
+    margin-left:0;
+}
+.tab-links li{
+    float:left;
+    margin-left: 0;
+    margin:0px 5px;
+
+}
+.tabs ul.tab-links li{
+    list-style-type:none;
+}
+.tab-links a {
+    position: relative;
+    display:inline-block;
+    background: #e0e0e0;
+    font-size: 16px;
+    padding: 15px 25px;
+    border-radius: 2px 2px 0px 0px;
+    color: #4c4c4c;
+    text-decoration: none;
+    top: 2px;
+    z-index: 1;     
+}
+.tab-links a:hover {
+    background: #e0e0e0;
+    text-decoration:none;
+}
+.tab-links li.active a, 
+.tab-links li.active a:hover{
+    background: #fff;
+    color:#000;
+    border-top: 2px solid #007AF5;
+    border-bottom: none;
+}
+.tab-links li.active{
+    position: relative;
+    z-index: 3
+}
+.tab-content{
+    position: relative;
+    background: #fff;
+    margin-top: -6px;
+    margin-bottom: 10px;
+    padding: 10px 0px 20px 15px;
+    z-index: 1;
+    border: 1px solid #ddd;
+
+}
+.tab-links li.active{
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: none;
+}
+.tab{
+    display: none;
+}
+.tab-content .active{
+    display: block;
+}
+/*-------------------------------------------------------*/
+/*  Media max width 768px for mobile
+/*-------------------------------------------------------*/
+@media all and (max-width: 768px){ 
+.wrapper,.fix,.content{
+    width: 100%;
+}
+.container{
+    height: auto;
+    padding-bottom: 0;
+}
+.wrapper,.container{
+    overflow: hidden;
+}
+.q1, .q2, .q3, .q4, .q5, .q6, .q7, .q8, .q9, .q10, .q11, .q12{
+    width: 100%;
+}
+.options{
+    margin: 10px 10px 0 2px;
+}
+.options h1,.options h2,.options h3,.options h4,.options h5{
+}
+.auto-fold #wpfooter {
+    display: block;
+    margin-left: 0px;
+}
+}
