@@ -66,7 +66,6 @@ add_action( 'current_screen', 'dpr_this_screen' );
 function dpr_scripts_admin() {
     if ( get_current_screen()->id === "settings_page_dpr_settings" ) {
         wp_enqueue_style( 'admin-css',   plugins_url( 'css/admin.css',__FILE__ ) );
-        wp_enqueue_style( 'admin-icons', plugins_url( 'css/ionicons.min.css',__FILE__ ) );
         wp_enqueue_script( 'admin-js',   plugins_url( 'js/admin.js',__FILE__ ), array(jquery) );
     }
 }
@@ -88,15 +87,6 @@ function dpr_admin_page() {
     global $wpdb, $dpr_option_name, $dpr_options;
     $checked = (is_array($dpr_options) && $dpr_options['disable'] == '1') ? 'checked="checked"' : null;
     $revisions = $wpdb->get_results("SELECT count(*) as count FROM $wpdb->posts WHERE post_type = 'revision' ");
-    if($revisions[0]->count > 0) {
-        $wpdb->query("
-            DELETE p,tr,pm 
-            FROM $wpdb->posts p 
-            LEFT JOIN $wpdb->term_relationships tr ON p.ID = tr.object_id 
-            LEFT JOIN $wpdb->postmeta pm ON p.ID = pm.post_id 
-            WHERE p.post_type = 'revision'
-        ");        
-    }
     $file = ABSPATH ."wp-config.php";
     chmod($file, 0777);
         $f = fopen($file, 'r+') or die('Error: Can`t open wp-config.php file.');
@@ -109,7 +99,8 @@ function dpr_admin_page() {
                     fputs($f, "\n// Disable post revisions, added by DPR plugin, http://keksus.com/dpr.html");
                     fputs($f, "\ndefine('WP_POST_REVISIONS', false);");
                     fputs($f, "\n");
-                    fputs($f, "\n/* Authentication Keys and Salts, @link https://api.wordpress.org/secret-key/1.1/salt/   ");
+                    fputs($f, "\n/* Authentication Keys and Salts, @link https://api.wordpress.org/secret-key/1.1/salt/");
+                    fputs($f, "                     ");
                 }
             }
         }
@@ -125,6 +116,7 @@ function dpr_admin_page() {
         }
         fclose($f);
     chmod($file, 0644);
+
 
 ?>
 <div class='options'>
@@ -144,9 +136,18 @@ function dpr_admin_page() {
                     <div class='clear'>
                         <div class='q8'>
                             <div class='post'>
-                                <h5>You have <strong><?php echo $revisions[0]->count; ?></strong> post revisions</h5>
-                                <?php print_r($dpr_options); ?>
-
+                                <h5>You have <strong><?php echo ($_POST['dpr_submit']) ? "0" : $revisions[0]->count; ?></strong> post revisions</h5>
+                                <?php 
+                                    if($revisions[0]->count > 0) {
+                                        $wpdb->query("
+                                            DELETE p,tr,pm 
+                                            FROM $wpdb->posts p 
+                                            LEFT JOIN $wpdb->term_relationships tr ON p.ID = tr.object_id 
+                                            LEFT JOIN $wpdb->postmeta pm ON p.ID = pm.post_id 
+                                            WHERE p.post_type = 'revision'
+                                        ");        
+                                    }
+                                ?>
                                 <input type="checkbox" name="<?php echo $dpr_option_name?>[disable]" value="1"<?php echo $checked; ?> />
                                 <label for="text_field"><strong>Disable post revisions</strong> </label> 
                                  <p>If field "Disable post revisions" checked, to file <strong>wp-config.php</strong> after line <strong>define('DB_COLLATE', '');</strong> the following lines will be added </p> 
@@ -217,12 +218,13 @@ define('WP_POST_REVISIONS', false);</pre>
                 </div>
                 
             </div>
-            
         </div>
     </form>
 </div>
 <?php
+
 } // dpr_admin_page
+
 
 // clean options and show message
 function dpr_sanitize($dpr_options) {  
