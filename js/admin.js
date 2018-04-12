@@ -17,4 +17,5 @@ jQuery(document).ready(function($) {
    		var text = $(this).text();
     	$(this).text(text.replace('<>', '<')); 
 	});
+	
 });

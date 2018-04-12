@@ -84,7 +84,7 @@ function dpr_plugin_settings() {
 add_action( 'admin_init', 'dpr_plugin_settings' );
 
 function dpr_admin_page() {
-    global $wpdb, $dpr_option_name, $dpr_options;
+    global $wpdb, $dpr_option_name, $dpr_options, $revisions;
     $checked = (is_array($dpr_options) && $dpr_options['disable'] == '1') ? 'checked="checked"' : null;
     $revisions = $wpdb->get_results("SELECT count(*) as count FROM $wpdb->posts WHERE post_type = 'revision' ");
     $file = ABSPATH ."wp-config.php";
@@ -100,7 +100,7 @@ function dpr_admin_page() {
                     fputs($f, "\ndefine('WP_POST_REVISIONS', false);");
                     fputs($f, "\n");
                     fputs($f, "\n/* Authentication Keys and Salts, @link https://api.wordpress.org/secret-key/1.1/salt/");
-                    fputs($f, "                     ");
+                    fputs($f, "                     "); 
                 }
             }
         }
@@ -121,6 +121,7 @@ function dpr_admin_page() {
 ?>
 <div class='options'>
     <h1><?php _e( 'DPR Settings', 'dpr' ); ?></h1>
+    <!-- <form class='dpr-form' method='POST' action="http://127.0.0.1/wpimport/wp-admin/options-general.php?page=dpr_settings" > -->
     <form class='dpr-form' method='POST' action="options.php" >
     <?php settings_fields( 'dpr_settings' ); ?>
         <div class='q12'>
@@ -137,19 +138,10 @@ function dpr_admin_page() {
                         <div class='q8'>
                             <div class='post'>
                                 <h5>You have <strong><?php echo ($_POST['dpr_submit']) ? "0" : $revisions[0]->count; ?></strong> post revisions</h5>
-                                <?php 
-                                    if($revisions[0]->count > 0) {
-                                        $wpdb->query("
-                                            DELETE p,tr,pm 
-                                            FROM $wpdb->posts p 
-                                            LEFT JOIN $wpdb->term_relationships tr ON p.ID = tr.object_id 
-                                            LEFT JOIN $wpdb->postmeta pm ON p.ID = pm.post_id 
-                                            WHERE p.post_type = 'revision'
-                                        ");        
-                                    }
-                                ?>
+
                                 <input type="checkbox" name="<?php echo $dpr_option_name?>[disable]" value="1"<?php echo $checked; ?> />
                                 <label for="text_field"><strong>Disable post revisions</strong> </label> 
+                                <p>Before enabling this option, make copy the current version of the file <strong>wp-config.php</strong> on the next tab</p>
                                  <p>If field "Disable post revisions" checked, to file <strong>wp-config.php</strong> after line <strong>define('DB_COLLATE', '');</strong> the following lines will be added </p> 
                                     <pre>// Disable post revisions, added by DPR plugin, http://keksus.com/dpr.html
 define('WP_POST_REVISIONS', false);</pre>
@@ -165,9 +157,8 @@ define('WP_POST_REVISIONS', false);</pre>
                 </div>
                  <div id='tab2' class='tab'>
                     <div class='clear'>
-                        <div class='q8'>
+                        <div class='q12'>
                             <div class='post'>
-                                <h5>Current contents of the wp-config.php file</h5>
                                 <?php 
                                     $f = fopen($file, 'r') or die('Error: Can`t open wp-config.php file.');
                                     $lines = file($file);
@@ -175,7 +166,7 @@ define('WP_POST_REVISIONS', false);</pre>
                                         echo '<pre>';
                                         $i = 1;
                                         foreach($lines as $line){
-                                            echo $i." ".$line."<br>";
+                                            echo $line."<br>";
                                             $i++;
                                         }                                       
                                         echo '</pre>';
@@ -194,7 +185,15 @@ define('WP_POST_REVISIONS', false);</pre>
                                     <p><?php _e( 'This plugin is licensed under the', 'dpr' );?>
                                         <a target="_blank" href="https://www.gnu.org/licenses/gpl-3.0.html">GPL v3 license</a>
                                     <?php _e( 'This means you can use it for anything you like as long as it remains GPL v3.', 'dpr' ); ?></p>
-
+                                <h2><?php _e( 'Recommended Plugins:', 'dpr' ); ?></h2>
+                                <ul>
+                                    <li><span>Simple contact form: </span> 
+                                        <a target="_blank" href="https://wordpress.org/plugins/ajax-message/">Ajax message</a>
+                                    </li>
+                                    <li><span>Shortcodes with CSS grid: </span> 
+                                        <a target="_blank" href="https://wordpress.org/plugins/q-shortcodes/">q-Shortcodes</a>
+                                    </li>
+                                </ul>
                                 <h2><?php _e( 'Links:', 'dpr' ); ?></h2>
                                     <p><?php _e( 'This plugin was created by', 'dpr' );?>
                                         <a target="_blank" href="http://keksus.com/">Keksus.com</a> <?php _e( 'You can follow us via our social media!', 'dpr' ); ?>
@@ -222,9 +221,18 @@ define('WP_POST_REVISIONS', false);</pre>
     </form>
 </div>
 <?php
-
 } // dpr_admin_page
 
+// delete revisions
+if(isset($_POST['dpr_submit'])) {
+    $wpdb->query("
+        DELETE p,tr,pm 
+        FROM $wpdb->posts p 
+        LEFT JOIN $wpdb->term_relationships tr ON p.ID = tr.object_id 
+        LEFT JOIN $wpdb->postmeta pm ON p.ID = pm.post_id 
+        WHERE p.post_type = 'revision'
+    ");                     
+}
 
 // clean options and show message
 function dpr_sanitize($dpr_options) {  
@@ -232,11 +240,6 @@ function dpr_sanitize($dpr_options) {
     $dpr_message = __( 'Settings saved!', 'dpr' );
     add_settings_error( $dpr_option_name, 'settings_updated', $dpr_message, $dpr_type );
 
-    foreach( $dpr_options as $name => $val ) {
-        if( $name == 'disable') {
-            $val = intval($val);
-        }
-        $val = sanitize_text_field($val);
-    }
     return $dpr_options; //die(print_r( $dpr_options ) );
 }
+
